@@ -36,3 +36,11 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+    - name: Notify Discord
+      if: always() # akan tetap kirim meskipun test gagal
+      run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"✅ Playwright CI finished. Check results here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+               ${{ secrets.DISCORD_WEBHOOK }}
